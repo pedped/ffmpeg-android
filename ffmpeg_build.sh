@@ -22,13 +22,21 @@ make clean
 --cpu="$CPU" \
 --enable-runtime-cpudetect \
 --sysroot="$NDK_SYSROOT" \
---enable-pic \
---enable-libx264 \
---enable-libass \
---enable-libfreetype \
---enable-libfribidi \
+--disable-all \
+--disable-network \
+--enable-avcodec \
+--enable-avformat \
+--enable-swresample \
+--enable-avfilter \
+--enable-parser=mpegaudio \
+--enable-demuxer=mp3,wav,pcm_s16le \
+--enable-muxer=mp3,pcm_s16le,wav \
+--enable-decoder=pcm*,mp3* \
+--enable-encoder=pcm*,libmp3lame \
+--enable-filter=aresample \
+--enable-protocol=file \
+--enable-ffmpeg \
 --enable-libmp3lame \
---enable-fontconfig \
 --enable-pthreads \
 --disable-debug \
 --disable-ffserver \
@@ -41,11 +49,13 @@ make clean
 --disable-doc \
 --disable-shared \
 --enable-static \
+--enable-small \
+--enable-nonfree \
 --pkg-config="${2}/ffmpeg-pkg-config" \
 --prefix="${2}/build/${1}" \
 --extra-cflags="-I${TOOLCHAIN_PREFIX}/include $CFLAGS" \
 --extra-ldflags="-L${TOOLCHAIN_PREFIX}/lib $LDFLAGS" \
---extra-libs="-lpng -lexpat -lm" \
+--extra-libs="-lm" \
 --extra-cxxflags="$CXX_FLAGS" || exit 1
 
 make -j${NUMBER_OF_CORES} && make install || exit 1
